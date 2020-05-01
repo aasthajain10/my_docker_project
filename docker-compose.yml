@@ -1,0 +1,32 @@
+version : '3'
+services:
+    dbos:
+       image : mysql:5.7
+       volumes:                
+           -mysql_storage_new :/var/lib/mysql
+       restart : always 
+       environment : 
+          MYSQL_ROOT_PASSWORD : rootpass
+          MYSQL_USER : aastha
+          MYSQL_PASSWORD : jain
+          MYSQL_DATABASE : mydb
+
+    drupal: 
+       image : drupal: latest
+       restart : always
+       depends_on : 
+          -dbos
+       ports: 
+          - 8081:80
+       environment:
+          DRUPAL_DB_HOST : dbos
+          DRUPAL_DB_USER : aastha
+          DRUPAL_DB_PASSWORD : jain
+          DRUPAL_DB_NAME : mydb
+       volumes :
+           - dp_storage_new :/var/www/html
+
+Volumes: 
+       dp_storage_new : 
+       mysql_storage_new :
+
